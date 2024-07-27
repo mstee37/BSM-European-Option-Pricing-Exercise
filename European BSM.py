@@ -255,4 +255,4 @@ def putCallParityTest(S,K,t,r,vol):
     
     print("Put-call parity test is {}".format(call == put))
 
-putCallParityTest(S,K,t,r,vol)
+# putCallParityTest(S,K,t,r,vol)
