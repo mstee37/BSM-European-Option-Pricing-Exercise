@@ -219,28 +219,28 @@ r = 0.02 # in %
 vol = 0.2 # in %
 
 #option price sensitivity to strike price = K
-# changesInK(S,K,t,r,vol, 10)
+changesInK(S,K,t,r,vol, 10)
 
 #option price sensitivity to underlying = S
-# changesInS(S,K,t,r,vol,10)
+changesInS(S,K,t,r,vol,10)
 
 #option price sensitivity to time = t
 start = 1
 end = 5
 step = 1
-# changesInT(S,K,t,r,vol,start,end,step)
+changesInT(S,K,t,r,vol,start,end,step)
 
 #option price sensitivity to risk-free rate = r
 start = 0.01
 end = 0.08
 step = 0.005
-# changesInR(S,K,t,r,vol,start,end,step)
+changesInR(S,K,t,r,vol,start,end,step)
 
 #option price sensitivity to volitility = vol
 start = 0.01
 end = 0.3
 step = 0.01
-# changesInVol(S,K,t,r,vol,start,end,step)
+changesInVol(S,K,t,r,vol,start,end,step)
 
 #Put-call Parity
 
@@ -255,4 +255,4 @@ def putCallParityTest(S,K,t,r,vol):
     
     print("Put-call parity test is {}".format(call == put))
 
-# putCallParityTest(S,K,t,r,vol)
+putCallParityTest(S,K,t,r,vol)
