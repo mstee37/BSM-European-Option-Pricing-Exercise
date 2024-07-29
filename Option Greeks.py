@@ -197,53 +197,23 @@ def thetaVsStrike(S,K,t,r,vol,start,end,num,ax):
     })
     df.to_csv("ThetaVsStrike.csv", index=False)
 
-S = 50 # underlying spot price
-K = 50 # strike
-t = 2 # in years
-r = 0.015 # in %
-vol = 0.1 # in %
-
-start = S-30
-end = S+30
-num = 100
-
-fig, axs = plt.subplots(2,2, figsize=(14, 9))
-
-deltaVsStrike(S,K,t,r,vol,start,end,num,axs[0,0])
-gammaVsStrike(S,K,t,r,vol,start,end,num,axs[0,1])
-vegaVsStrike(S,K,t,r,vol,start,end,num,axs[1,1])
-thetaVsStrike(S,K,t,r,vol,start,end,num,axs[1,0])
-
-plt.tight_layout()
-plt.show()
 
 # Function to plot Gamma vs time to expiration for different strike prices
-def gammaVsTimeToExpiration(S, r, vol, start, end, num):
-    t = np.linspace(start, end, num)  # Create a range of times to expiration
+def gammaVsTimeToExpiration(S, r, vol, start_t, end_t, start, K, end, num, ax):
+    t = np.linspace(start_t, end_t, num)  # Create a range of times to expiration
 
-    strikes = [80, 100, 120]  # Different strike prices to illustrate the relationship
-    plt.figure(figsize=(10, 6))
+    strikes = [start, K, end]  # Different strike prices to illustrate the relationship
 
     for K in strikes:
         Gamma = calculateGamma(S, K, t, r, vol)
-        plt.plot(t, Gamma, label=f"Strike K = {K}")
+        ax.plot(t, Gamma, label=f"Strike K = {K}")
 
-    plt.xlabel("Time to Expiration (years)")
-    plt.ylabel("Gamma")
-    plt.axvline(x=0, linestyle="dotted", label="Current Time")
-    plt.title("Gamma VS Time to Expiration")
-    plt.legend()
-    plt.grid(True)
-    plt.show()
-
-# Parameters
-S = 100  # Underlying spot price
-r = 0.015  # Risk-free interest rate
-vol = 0.2  # Volatility
-
-start = 0.01  # Start time to expiration (close to zero but not zero)
-end = 2  # End time to expiration (in years)
-num = 100  # Number of points
+    ax.set_xlabel("Time to Expiration (years)")
+    ax.set_ylabel("Gamma")
+    ax.axvline(x=0, linestyle="dotted", label="Current Time")
+    ax.set_title("Gamma VS Time to Expiration")
+    ax.legend()
+    ax.grid(True)
 
 # Function to calculate Vega
 def calculateVega(S, K, t, r, vol):
@@ -252,25 +222,45 @@ def calculateVega(S, K, t, r, vol):
     return S * np.sqrt(t) * dN
 
 # Function to plot Vega vs time to expiration for different strike prices
-def vegaVsTimeToExpiration(S, r, vol, start, end, num):
-    t = np.linspace(start, end, num)  # Create a range of times to expiration
+def vegaVsTimeToExpiration(S, r, vol, start_t, end_t,start,K,end, num, ax):
+    t = np.linspace(start_t, end_t, num)  # Create a range of times to expiration
 
-    strikes = [80, 100, 120]  # Different strike prices to illustrate the relationship
-    plt.figure(figsize=(10, 6))
+    strikes = [start, K, end]  # Different strike prices to illustrate the relationship
 
     for K in strikes:
         Vega = calculateVega(S, K, t, r, vol)
-        plt.plot(t, Vega, label=f"Strike K = {K}")
+        ax.plot(t, Vega, label=f"Strike K = {K}")
 
-    plt.xlabel("Time to Expiration (years)")
-    plt.ylabel("Vega")
-    plt.axvline(x=0, linestyle="dotted", label="Current Time")
-    plt.title("Vega VS Time to Expiration")
-    plt.legend()
-    plt.grid(True)
-    plt.show()
+    ax.set_xlabel("Time to Expiration (years)")
+    ax.set_ylabel("Vega")
+    ax.axvline(x=0, linestyle="dotted", label="Current Time")
+    ax.set_title("Vega VS Time to Expiration")
+    ax.legend()
+    ax.grid(True)
     
-# Plot Gamma vs Time to Expiration for different strike prices
-gammaVsTimeToExpiration(S, r, vol, start, end, num)
-# Plot Vega vs Time to Expiration for different strike prices
-vegaVsTimeToExpiration(S, r, vol, start, end, num)
+S = 50 # underlying spot price
+K = 50 # strike
+t = 2 # in years
+r = 0.015 # in %
+vol = 0.1 # in %
+
+start = S-20 # strike price
+end = S+20 # strike price
+num = 100
+
+fig, axs = plt.subplots(2,3, figsize=(18, 9))
+
+deltaVsStrike(S,K,t,r,vol,start,end,num,axs[0,0])
+gammaVsStrike(S,K,t,r,vol,start,end,num,axs[0,1])
+vegaVsStrike(S,K,t,r,vol,start,end,num,axs[1,1])
+thetaVsStrike(S,K,t,r,vol,start,end,num,axs[1,0])
+
+start_t = 0.01  # Start time to expiration (close to zero but not zero)
+end_t = 2  # End time to expiration (in years)
+num = 100  # Number of points
+
+gammaVsTimeToExpiration(S, r, vol, start_t, end_t,start,K,end,num,axs[0,2])
+vegaVsTimeToExpiration(S, r, vol, start_t, end_t,start,K,end,num,axs[1,2])
+
+plt.tight_layout()
+plt.show()
