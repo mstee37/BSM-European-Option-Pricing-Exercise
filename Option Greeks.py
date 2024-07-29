@@ -79,5 +79,5 @@ gammaVsStrike(S,K,t,r,vol,start,end,num)
 
 #Vega is the change in Option Value with respect to Volitility of underlying asset
 
-#Theta is the change in Option Value for change in time remaining; AKA option value's time decay, usually expressed in negative value
+#Theta is the change  in (usually loss in) Option Value for change in time remaining; AKA option value's time decay, usually expressed in negative value
 
