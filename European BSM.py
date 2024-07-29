@@ -1,13 +1,13 @@
 import math
 from scipy.stats import norm
 
-# C = S*N(d1) - K*e^(-rt) * N(d2)
-# P = K*e^(-rt) N(-d2) - S*N(-d1)
+# C = S*N(d1) - K*e^(-rt) * N(d2) (max(S-K,0))
+# P = K*e^(-rt) N(-d2) - S*N(-d1) (max(K-S,0))
 # d1 = (ln(S/K) + (r + vol^2/2)t) / (vol * sqrt of t)
 # d2 = d1 - vol * sqrt of t
 
-# C = call option price
-# P = put option price
+# C = call option price (max(S-K,0))
+# P = put option price (max(K-S,0))
 # S = underlying
 # K = strike
 # r = risk free
