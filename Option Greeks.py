@@ -216,3 +216,61 @@ thetaVsStrike(S,K,t,r,vol,start,end,num,axs[1,0])
 
 plt.tight_layout()
 plt.show()
+
+# Function to plot Gamma vs time to expiration for different strike prices
+def gammaVsTimeToExpiration(S, r, vol, start, end, num):
+    t = np.linspace(start, end, num)  # Create a range of times to expiration
+
+    strikes = [80, 100, 120]  # Different strike prices to illustrate the relationship
+    plt.figure(figsize=(10, 6))
+
+    for K in strikes:
+        Gamma = calculateGamma(S, K, t, r, vol)
+        plt.plot(t, Gamma, label=f"Strike K = {K}")
+
+    plt.xlabel("Time to Expiration (years)")
+    plt.ylabel("Gamma")
+    plt.axvline(x=0, linestyle="dotted", label="Current Time")
+    plt.title("Gamma VS Time to Expiration")
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+# Parameters
+S = 100  # Underlying spot price
+r = 0.015  # Risk-free interest rate
+vol = 0.2  # Volatility
+
+start = 0.01  # Start time to expiration (close to zero but not zero)
+end = 2  # End time to expiration (in years)
+num = 100  # Number of points
+
+# Function to calculate Vega
+def calculateVega(S, K, t, r, vol):
+    d1 = (np.log(S/K) + (r + vol**2/2)*t) / (vol * np.sqrt(t))
+    dN = np.exp(-d1**2/2) / np.sqrt(2*np.pi)
+    return S * np.sqrt(t) * dN
+
+# Function to plot Vega vs time to expiration for different strike prices
+def vegaVsTimeToExpiration(S, r, vol, start, end, num):
+    t = np.linspace(start, end, num)  # Create a range of times to expiration
+
+    strikes = [80, 100, 120]  # Different strike prices to illustrate the relationship
+    plt.figure(figsize=(10, 6))
+
+    for K in strikes:
+        Vega = calculateVega(S, K, t, r, vol)
+        plt.plot(t, Vega, label=f"Strike K = {K}")
+
+    plt.xlabel("Time to Expiration (years)")
+    plt.ylabel("Vega")
+    plt.axvline(x=0, linestyle="dotted", label="Current Time")
+    plt.title("Vega VS Time to Expiration")
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+    
+# Plot Gamma vs Time to Expiration for different strike prices
+gammaVsTimeToExpiration(S, r, vol, start, end, num)
+# Plot Vega vs Time to Expiration for different strike prices
+vegaVsTimeToExpiration(S, r, vol, start, end, num)
