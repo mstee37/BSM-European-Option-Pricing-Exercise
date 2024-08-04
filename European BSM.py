@@ -28,18 +28,19 @@ d2 = d1 - vol * math.sqrt(t)
 
 C = S * norm.cdf(d1) - K * math.exp(-r*t) * norm.cdf(d2)
 P = K * math.exp(-r*t) * norm.cdf(-d2) - S * norm.cdf(-d1)
-
-
     
 # N(d1) = delta -> probability of how far ITM the underlying price will be
 # N(d2) = probability that the option expires ITM
-# print("Call N(d1) = {:.5f}".format(norm.cdf(d1)))
-# print("Call N(d2) = {:.5f}".format(norm.cdf(d2)))
-# print("Put N(-d1) = {:.5f}".format(norm.cdf(-d1)))
-# print("Put N(-d2) = {:.5f}".format(norm.cdf(-d2)))
-
-# print("call option price = {:.2f}".format(C))
-# print("put option price = {:.2f}".format(P))
+print("d1 = {:.5f}".format(d1))
+print("Call N(d1) = {:.5f}".format(norm.cdf(d1)))
+print("Call N(d2) = {:.5f}".format(norm.cdf(d2)))
+print()
+print("-d1 = {:.5f}".format(-d1))
+print("Put N(-d1) = {:.5f}".format(norm.cdf(-d1)))
+print("Put N(-d2) = {:.5f}".format(norm.cdf(-d2)))
+print()
+print("call option price = {:.2f}".format(C))
+print("put option price = {:.2f}".format(P))
 
 import pandas as pd
 import numpy as np
@@ -56,7 +57,7 @@ def putPrice(S, K, t, r, vol):
     return K * math.exp(-r*t) * norm.cdf(-d2) - S * norm.cdf(-d1)
 
 
-def changesInK(S, K, t, r, vol, strikeRangeFromS):
+def changesInK(S, K, t, r, vol, strikeRangeFromS, ax):
     
     K_list = list()
     C_list = list()
@@ -73,17 +74,16 @@ def changesInK(S, K, t, r, vol, strikeRangeFromS):
     x = df["K"]
     y1 = df["Call Prem"]
     y2 = df["Put Prem"]
-    plt.plot(x,y1)
-    plt.plot(x,y2, "-.")
-    plt.legend(df.columns[1:])
-    plt.xlabel("strike")
-    plt.ylabel("Option Prem")
-    plt.axvline(x = S, linestyle="dotted")
-    plt.title("Underlying price S = {}".format(S))
-    plt.show()
+    ax.plot(x,y1)
+    ax.plot(x,y2, "-.")
+    ax.legend(df.columns[1:])
+    ax.set_xlabel("strike")
+    ax.set_ylabel("Option Prem")
+    ax.axvline(x = S, linestyle="dotted")
+    ax.set_title("Underlying price S = {}".format(S))
+    ax.grid(True)
 
-
-def changesInS(S, K, t, r, vol, SRangeFromK):
+def changesInS(S, K, t, r, vol, SRangeFromK, ax):
     
     S_list = list()
     C_list = list()
@@ -100,16 +100,16 @@ def changesInS(S, K, t, r, vol, SRangeFromK):
     x = df["S"]
     y1 = df["Call Prem"]
     y2 = df["Put Prem"]
-    plt.plot(x,y1)
-    plt.plot(x,y2, "-.")
-    plt.legend(df.columns[1:])
-    plt.xlabel("Underlying S")
-    plt.ylabel("Option Prem")
-    plt.axvline(x = K, linestyle="dotted")
-    plt.title("Strike K = {}".format(K))
-    plt.show()
+    ax.plot(x,y1)
+    ax.plot(x,y2, "-.")
+    ax.legend(df.columns[1:])
+    ax.set_xlabel("Underlying S")
+    ax.set_ylabel("Option Prem")
+    ax.axvline(x = K, linestyle="dotted")
+    ax.set_title("Strike K = {}".format(K))
+    ax.grid(True)
 
-def changesInT(S, K, T, r, vol, start, end, step):
+def changesInT(S, K, T, r, vol, start, end, step, ax):
     
     t_list = list()
     
@@ -134,16 +134,16 @@ def changesInT(S, K, T, r, vol, start, end, step):
     x = df["t"]
     y1 = df["Call Prem"]
     y2 = df["Put Prem"]
-    plt.plot(x,y1)
-    plt.plot(x,y2, "-.")
-    plt.legend(df.columns[1:])
-    plt.xlabel("Time to maturity")
-    plt.ylabel("Option Prem")
+    ax.plot(x,y1)
+    ax.plot(x,y2, "-.")
+    ax.legend(df.columns[1:])
+    ax.set_xlabel("Time to maturity")
+    ax.set_ylabel("Option Prem")
     # plt.axvline(x = K, linestyle="dotted")
-    plt.title("t0 = {} to t1 = {}".format(start, end))
-    plt.show()
+    ax.set_title("t0 = {} to t1 = {}".format(start, end))
+    ax.grid(True)
 
-def changesInR(S, K, T, r, vol, start, end, step):
+def changesInR(S, K, T, r, vol, start, end, step, ax):
     
     r_list = list()
     
@@ -169,16 +169,16 @@ def changesInR(S, K, T, r, vol, start, end, step):
     x = df["r"]
     y1 = df["Call Prem"]
     y2 = df["Put Prem"]
-    plt.plot(x,y1)
-    plt.plot(x,y2, "-.")
-    plt.legend(df.columns[1:])
-    plt.xlabel("Risk free rate (in %)")
-    plt.ylabel("Option Prem")
+    ax.plot(x,y1)
+    ax.plot(x,y2, "-.")
+    ax.legend(df.columns[1:])
+    ax.set_xlabel("Risk free rate (in %)")
+    ax.set_ylabel("Option Prem")
     # plt.axvline(x = K, linestyle="dotted")
-    plt.title("r0 = {} to r1 = {}".format(start, end))
-    plt.show()
+    ax.set_title("r0 = {} to r1 = {}".format(start, end))
+    ax.grid(True)
     
-def changesInVol(S, K, T, r, vol, start, end, step):
+def changesInVol(S, K, T, r, vol, start, end, step, ax):
     
     vol_list = list()
     
@@ -203,44 +203,49 @@ def changesInVol(S, K, T, r, vol, start, end, step):
     x = df["vol"]
     y1 = df["Call Prem"]
     y2 = df["Put Prem"]
-    plt.plot(x,y1)
-    plt.plot(x,y2, "-.")
-    plt.legend(df.columns[1:])
-    plt.xlabel("Volitility (in %)")
-    plt.ylabel("Option Prem")
+    ax.plot(x,y1)
+    ax.plot(x,y2, "-.")
+    ax.legend(df.columns[1:])
+    ax.set_xlabel("Volitility (in %)")
+    ax.set_ylabel("Option Prem")
     # plt.axvline(x = K, linestyle="dotted")
-    plt.title("vol0 = {} to vol1 = {}".format(start, end))
-    plt.show()
+    ax.set_title("vol0 = {} to vol1 = {}".format(start, end))
+    ax.grid(True)
 
-S = 40 # underlying
+fig, axs = plt.subplots(2,3, figsize=(18, 9))
+
+S = 45 # underlying
 K = 45 # strike
 t = 1.5 # in years
 r = 0.02 # in %
 vol = 0.2 # in %
 
 #option price sensitivity to strike price = K
-changesInK(S,K,t,r,vol, 10)
+changesInK(S,K,t,r,vol,10,axs[0,0])
 
 #option price sensitivity to underlying = S
-changesInS(S,K,t,r,vol,10)
+changesInS(S,K,t,r,vol,10,axs[1,0])
 
 #option price sensitivity to time = t
 start = 1
 end = 5
 step = 1
-changesInT(S,K,t,r,vol,start,end,step)
+changesInT(S,K,t,r,vol,start,end,step,axs[0,1])
 
 #option price sensitivity to risk-free rate = r
 start = 0.01
 end = 0.08
 step = 0.005
-changesInR(S,K,t,r,vol,start,end,step)
+changesInR(S,K,t,r,vol,start,end,step,axs[1,1])
 
 #option price sensitivity to volitility = vol
 start = 0.01
 end = 0.3
 step = 0.01
-changesInVol(S,K,t,r,vol,start,end,step)
+changesInVol(S,K,t,r,vol,start,end,step,axs[0,2])
+
+plt.tight_layout()
+plt.show()
 
 #Put-call Parity
 
